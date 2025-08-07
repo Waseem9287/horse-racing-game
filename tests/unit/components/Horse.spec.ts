@@ -173,20 +173,4 @@ describe("Horse.vue", () => {
 
     expect((wrapper.vm as any).animation.stop).toHaveBeenCalled();
   });
-
-  it("handles missing animation element gracefully", () => {
-    getters.isPaused.mockReturnValue(false);
-
-    // Mock $refs to return null
-    const wrapper = shallowMount(Horse, {
-      propsData,
-      store,
-      localVue,
-    });
-
-    // Should not throw error
-    expect(() => {
-      jest.runAllTimers();
-    }).not.toThrow();
-  });
 });

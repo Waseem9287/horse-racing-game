@@ -2,7 +2,7 @@ import { createLocalVue } from "@vue/test-utils";
 import Vuex from "vuex";
 import races from "@/store/modules/races";
 import horses from "@/store/modules/horses";
-import { IRound, IRace, IHorse, ERoundDistance } from "@/store/modules/types";
+import { IRound, IRace, ERoundDistance } from "@/store/modules/types";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);

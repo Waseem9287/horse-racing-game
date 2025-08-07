@@ -1,7 +1,6 @@
 import { shallowMount, createLocalVue } from "@vue/test-utils";
 import Vuex from "vuex";
 import HorsesRace from "@/components/HorsesRace.vue";
-import Horse from "@/components/Horse.vue";
 
 describe("HorsesRace.vue", () => {
   const localVue = createLocalVue();

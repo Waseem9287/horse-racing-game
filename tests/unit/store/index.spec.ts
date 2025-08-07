@@ -1,7 +1,6 @@
 import { createLocalVue } from "@vue/test-utils";
 import Vuex from "vuex";
 import store from "@/store";
-import { IRootState } from "@/store/modules/types";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);

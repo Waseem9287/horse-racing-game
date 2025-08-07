@@ -7,7 +7,6 @@ import {
   IRootState,
   IRound,
 } from "@/store/modules/types";
-import Vue from "vue";
 
 const state: IRacesState = {
   paused: true,
