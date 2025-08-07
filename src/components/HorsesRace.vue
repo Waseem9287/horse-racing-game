@@ -63,7 +63,7 @@ export default class HorsesList extends Vue {
   display: flex;
   flex-direction: column;
   width: 100%;
-  min-width: 750px;
+  min-width: 650px;
 
   &-track {
     display: flex;

@@ -65,9 +65,9 @@ h4 {
 .container {
   display: flex;
   justify-content: space-between;
-  padding: 20px;
+  padding: 15px;
   width: 100%;
   margin: 0 auto;
-  gap: 20px;
+  gap: 10px;
 }
 </style>

@@ -75,7 +75,7 @@ export default class RaceResults extends Vue {
   align-items: stretch;
   gap: 5px;
   width: 100%;
-  min-width: 450px;
+  min-width: 350px;
   max-width: 600px;
   background: white;
 
