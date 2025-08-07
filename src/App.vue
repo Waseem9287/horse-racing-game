@@ -1,29 +1,73 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App" />
+    <AppHeader />
+    <div class="appLayout container">
+      <HorsesList />
+      <HorseRace />
+      <RaceResults />
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
-import HelloWorld from "./components/HelloWorld.vue";
+import AppHeader from "./components/AppHeader.vue";
+import HorsesList from "./components/HorsesList.vue";
+import HorseRace from "./components/HorsesRace.vue";
+import RaceResults from "./components/RaceResults.vue";
 
 export default Vue.extend({
   name: "App",
   components: {
-    HelloWorld,
+    AppHeader,
+    HorsesList,
+    HorseRace,
+    RaceResults,
   },
 });
 </script>
 
-<style>
+<style lang="scss">
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #eaeaea;
+
+  * {
+    box-sizing: border-box;
+  }
+}
+
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  display: flex;
+  flex-direction: column;
+}
+
+.appLayout {
+  height: 100%;
+  max-height: calc(100vh - 80px);
+}
+
+h2 {
+  margin: 0;
+  font-size: 24px;
+  color: #333;
+}
+
+h3,
+h4 {
+  margin: 0;
+  font-size: 18px;
+  color: #333;
+}
+
+.container {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+  width: 100%;
+  margin: 0 auto;
+  gap: 20px;
 }
 </style>

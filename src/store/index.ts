@@ -1,12 +1,17 @@
 import Vue from "vue";
-import Vuex from "vuex";
+import Vuex, { StoreOptions } from "vuex";
+
+import horses from "./modules/horses";
+import races from "./modules/races";
+import { IRootState } from "./modules/types";
 
 Vue.use(Vuex);
 
-export default new Vuex.Store({
-  state: {},
-  getters: {},
-  mutations: {},
-  actions: {},
-  modules: {},
-});
+const store: StoreOptions<IRootState> = {
+  modules: {
+    horses,
+    races,
+  },
+};
+
+export default new Vuex.Store<IRootState>(store);
