@@ -6980,7 +6980,7 @@ __metadata:
     sass-loader: "npm:^10.5.2"
     ts-jest: "npm:^27.0.4"
     typescript: "npm:~4.5.5"
-    vue: "npm:^2.7.16"
+    vue: "npm:2.7.16"
     vue-class-component: "npm:^7.2.6"
     vue-template-compiler: "npm:^2.6.14"
     vuex: "npm:^3.6.2"
@@ -12365,7 +12365,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue@npm:^2.7.16":
+"vue@npm:2.7.16":
   version: 2.7.16
   resolution: "vue@npm:2.7.16"
   dependencies:
