@@ -1,3 +1,13 @@
+<script setup lang="ts">
+import { computed } from "vue";
+import { useStore } from "@/store";
+import type { IHorse } from "@/store/modules/types";
+
+const store = useStore();
+
+const getHorses = computed<IHorse[]>(() => store.getters["horses/getHorses"]);
+</script>
+
 <template>
   <div class="HorsesList">
     <h2>Horses List</h2>
@@ -35,30 +45,20 @@
   </div>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import Component from "vue-class-component";
-import { mapGetters } from "vuex";
-import { IHorse } from "@/store/modules/types";
-
-@Component({
-  name: "HorsesList",
-  computed: {
-    ...mapGetters("horses", ["getHorses"]),
-  },
-})
-export default class HorsesList extends Vue {
-  public getHorses!: Array<IHorse>;
-}
-</script>
-
 <style lang="scss">
+@use "@/assets/styles/variables.scss" as *;
+
 .HorsesList {
   display: flex;
   flex-direction: column;
   gap: 20px;
   width: 400px;
-  min-width: 350px;
+  min-width: 325px;
+
+  @media (max-width: $laptop) {
+    width: 100%;
+    min-width: 100%;
+  }
 
   &-grid {
     display: flex;

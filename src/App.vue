@@ -3,31 +3,22 @@
     <AppHeader />
     <div class="appLayout container">
       <HorsesList />
-      <HorseRace />
-      <RaceResults />
+      <HorsesRace />
+      <RacesResults />
     </div>
   </div>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
+<script setup lang="ts">
 import AppHeader from "./components/AppHeader.vue";
 import HorsesList from "./components/HorsesList.vue";
-import HorseRace from "./components/HorsesRace.vue";
-import RaceResults from "./components/RaceResults.vue";
-
-export default Vue.extend({
-  name: "App",
-  components: {
-    AppHeader,
-    HorsesList,
-    HorseRace,
-    RaceResults,
-  },
-});
+import HorsesRace from "./components/HorsesRace.vue";
+import RacesResults from "./components/RacesResults.vue";
 </script>
 
 <style lang="scss">
+@use "@/assets/styles/variables.scss" as *;
+
 body {
   margin: 0;
   font-family: Arial, sans-serif;
@@ -47,6 +38,10 @@ body {
 .appLayout {
   height: 100%;
   max-height: calc(100vh - 80px);
+
+  @media (max-width: $laptop) {
+    flex-direction: column;
+  }
 }
 
 h2 {

@@ -1,5 +1,5 @@
 import Vue from "vue";
-import Vuex, { StoreOptions } from "vuex";
+import Vuex from "vuex";
 
 import horses from "./modules/horses";
 import races from "./modules/races";
@@ -7,11 +7,13 @@ import { IRootState } from "./modules/types";
 
 Vue.use(Vuex);
 
-const store: StoreOptions<IRootState> = {
+const store = new Vuex.Store<IRootState>({
   modules: {
     horses,
     races,
   },
-};
+});
 
-export default new Vuex.Store<IRootState>(store);
+export default store;
+
+export const useStore = () => store;

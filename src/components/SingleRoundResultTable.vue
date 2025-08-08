@@ -1,3 +1,24 @@
+<script setup lang="ts">
+import { computed, defineProps } from "vue";
+import type { IHorse, IRound } from "@/store/modules/types";
+
+const props = defineProps<{
+  roundInfo: IRound;
+}>();
+
+const sortedResults = computed(() =>
+  props.roundInfo.places.map((colorName) => {
+    const horse = props.roundInfo.horses.find(
+      (h: IHorse) => h.color.colorName === colorName
+    );
+    return {
+      color: horse?.color,
+      name: horse?.name,
+    };
+  })
+);
+</script>
+
 <template>
   <div class="RoundResultTable">
     <div class="RoundResultTable-grid-header">
@@ -17,38 +38,7 @@
   </div>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import Component from "vue-class-component";
-import { IHorse, IRound } from "@/store/modules/types";
-
-const ResultTableProps = Vue.extend({
-  name: "RoundResultTable",
-  props: {
-    roundInfo: {
-      type: Object,
-      required: true,
-    },
-  },
-});
-
-@Component
-export default class ResultTable extends ResultTableProps {
-  public get sortedResults() {
-    return (this.roundInfo as IRound).places.map((colorName) => {
-      const horse = this.roundInfo.horses.find(
-        (h: IHorse) => h.color.colorName === colorName
-      );
-      return {
-        color: horse?.color,
-        name: horse?.name,
-      };
-    });
-  }
-}
-</script>
-
-<style scoped lang="scss">
+<style lang="scss">
 .RoundResultTable {
   &-grid {
     display: flex;

@@ -1,3 +1,15 @@
+<script setup lang="ts">
+import { computed } from "vue";
+import { useStore } from "@/store";
+import AnimatedHorse from "@/components/AnimatedHorse.vue";
+import type { IRound } from "@/store/modules/types";
+
+const store = useStore();
+const getCurrentRound = computed<IRound | null>(
+  () => store.getters["races/getCurrentRound"]
+);
+</script>
+
 <template>
   <div class="HorsesRace">
     <template v-if="getCurrentRound">
@@ -16,7 +28,7 @@
         }"
       >
         <div class="HorsesRace-track-name">{{ i + 1 }}</div>
-        <Horse
+        <AnimatedHorse
           class="HorsesRace-horse"
           :horseSpeed="horse.condition"
           :horseName="horse.name"
@@ -36,34 +48,19 @@
     </template>
   </div>
 </template>
-
-<script lang="ts">
-import Vue from "vue";
-import Horse from "@/components/Horse.vue";
-import Component from "vue-class-component";
-import { mapGetters } from "vuex";
-import { IRound } from "@/store/modules/types";
-
-@Component({
-  name: "HorsesList",
-  components: {
-    Horse,
-  },
-  computed: {
-    ...mapGetters("races", ["getCurrentRound"]),
-  },
-})
-export default class HorsesList extends Vue {
-  public getCurrentRound!: IRound | null;
-}
-</script>
-
 <style lang="scss">
+@use "@/assets/styles/variables.scss" as *;
+
 .HorsesRace {
   display: flex;
   flex-direction: column;
   width: 100%;
-  min-width: 650px;
+  min-width: 615px;
+
+  @media (max-width: $laptop) {
+    width: 100%;
+    min-width: 100%;
+  }
 
   &-track {
     display: flex;
@@ -73,6 +70,10 @@ export default class HorsesList extends Vue {
     position: relative;
     border: 2px dashed #ccc;
     border-right: 5px solid var(--horseColor, #000);
+
+    @media (max-width: $mobile) {
+      height: 50px;
+    }
 
     &::before {
       content: "";
@@ -101,6 +102,12 @@ export default class HorsesList extends Vue {
       z-index: -1;
       width: 96px;
       padding: 10px 0;
+
+      @media (max-width: $mobile) {
+        width: 50px;
+        padding: 5px 0;
+        transform: rotate(-90deg) translateY(-10px);
+      }
     }
 
     &-finished {

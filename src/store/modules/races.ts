@@ -8,6 +8,18 @@ import {
   IRound,
 } from "@/store/modules/types";
 
+const RACE_CONFIG = {
+  HORSES_PER_ROUND: 10,
+  SHUFFLE_RANDOMNESS: 0.5,
+  BASE_SPEED: 10,
+  CONDITION_DIVIDER: 20,
+  RANDOM_FACTOR_RANGE: 2.5,
+  ROUND_PROGRESS_DELAY_MS: 50,
+  ROUND_START_DELAY_MS: 250,
+  ROUND_FINISH_DELAY_MS: 1000,
+  INFINITY_PROGRESS: Infinity,
+};
+
 const state: IRacesState = {
   paused: true,
   currentRound: null,
@@ -68,8 +80,10 @@ const actions = {
     index: number
   ) {
     const horses: Array<IHorse> = rootGetters["horses/getHorses"];
-    const shuffledHorses = [...horses].sort(() => 0.5 - Math.random());
-    const horsesInRound = shuffledHorses.slice(0, 10);
+    const shuffledHorses = [...horses].sort(
+      () => RACE_CONFIG.SHUFFLE_RANDOMNESS - Math.random()
+    );
+    const horsesInRound = shuffledHorses.slice(0, RACE_CONFIG.HORSES_PER_ROUND);
 
     const round: IRound = {
       id: `Round #${index + 1}`,
@@ -95,7 +109,7 @@ const actions = {
       const { commit, state } = context;
 
       if (!state.currentRound || state.paused) {
-        setTimeout(resolve, 250);
+        setTimeout(resolve, RACE_CONFIG.ROUND_START_DELAY_MS);
       } else {
         const currentRound = state.currentRound;
         const horses = currentRound.horses;
@@ -104,14 +118,18 @@ const actions = {
         const progressUpdates = horses.reduce(
           (acc: Record<string, number>, horse) => {
             if (currentRound.places.includes(horse.color.colorName)) {
-              acc[horse.color.colorName] = Infinity;
+              acc[horse.color.colorName] = RACE_CONFIG.INFINITY_PROGRESS;
               return acc;
             }
 
             const colorName = horse.color.colorName;
             const currentProgress = currentRound.roundProgress[colorName];
-            const baseSpeed = 10 + horse.condition / 20;
-            const randomFactor = Math.random() * 2.5 - 1.25;
+            const baseSpeed =
+              RACE_CONFIG.BASE_SPEED +
+              horse.condition / RACE_CONFIG.CONDITION_DIVIDER;
+            const randomFactor =
+              Math.random() * RACE_CONFIG.RANDOM_FACTOR_RANGE -
+              RACE_CONFIG.RANDOM_FACTOR_RANGE / 2;
             const progress = currentProgress + baseSpeed + randomFactor; // More randomness
             acc[colorName] = progress;
 
@@ -145,7 +163,7 @@ const actions = {
         commit("updateRoundProgress", progressUpdates);
         commit("updateRoundPlaces", updatedPlaces);
 
-        setTimeout(resolve, 50);
+        setTimeout(resolve, RACE_CONFIG.ROUND_PROGRESS_DELAY_MS);
       }
     });
   },
@@ -163,14 +181,18 @@ const actions = {
     for (let i = 0; i < AROUND_DISTANCES.length; i++) {
       const round = await dispatch("generateRound", i);
 
-      while ((state.currentRound?.places.length || 0) < 10) {
+      while (
+        (state.currentRound?.places.length || 0) < RACE_CONFIG.HORSES_PER_ROUND
+      ) {
         await dispatch("emulateRoundProgress");
       }
 
       commit("addRoundToRace", round);
       commit("setCurrentRound", null);
 
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate a delay between rounds
+      await new Promise((resolve) =>
+        setTimeout(resolve, RACE_CONFIG.ROUND_FINISH_DELAY_MS)
+      ); // Simulate a delay between rounds
     }
 
     commit("addPreviousRace", race);

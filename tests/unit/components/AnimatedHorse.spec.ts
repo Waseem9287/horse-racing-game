@@ -1,6 +1,6 @@
 import { shallowMount, createLocalVue } from "@vue/test-utils";
 import Vuex from "vuex";
-import Horse from "@/components/Horse.vue";
+import AnimatedHorse from "@/components/AnimatedHorse.vue";
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
@@ -15,7 +15,7 @@ afterEach(() => {
   jest.useRealTimers();
 });
 
-describe("Horse.vue", () => {
+describe("AnimatedHorse.vue", () => {
   let store: any;
   let getters: any;
 
@@ -52,22 +52,22 @@ describe("Horse.vue", () => {
   it("renders component correctly", () => {
     getters.isPaused.mockReturnValue(false);
 
-    const wrapper = shallowMount(Horse, {
+    const wrapper = shallowMount(AnimatedHorse, {
       propsData,
       store,
       localVue,
     });
 
-    expect(wrapper.find(".Horse").exists()).toBe(true);
-    expect(wrapper.find(".Horse-name").text()).toBe("Thunder");
-    expect(wrapper.find(".Horse-animation").exists()).toBe(true);
+    expect(wrapper.find(".AnimatedHorse").exists()).toBe(true);
+    expect(wrapper.find(".AnimatedHorse-name").text()).toBe("Thunder");
+    expect(wrapper.find(".AnimatedHorse-animation").exists()).toBe(true);
     expect((wrapper.vm as any).show).toBe(false);
   });
 
   it("applies correct props", () => {
     getters.isPaused.mockReturnValue(false);
 
-    const wrapper = shallowMount(Horse, {
+    const wrapper = shallowMount(AnimatedHorse, {
       propsData: {
         horseName: "Lightning",
         horseSpeed: 90,
@@ -83,7 +83,7 @@ describe("Horse.vue", () => {
   it("uses default props when not provided", () => {
     getters.isPaused.mockReturnValue(false);
 
-    const wrapper = shallowMount(Horse, {
+    const wrapper = shallowMount(AnimatedHorse, {
       store,
       localVue,
     });
@@ -95,7 +95,7 @@ describe("Horse.vue", () => {
   it("shows component after animation setup", () => {
     getters.isPaused.mockReturnValue(false);
 
-    const wrapper = shallowMount(Horse, {
+    const wrapper = shallowMount(AnimatedHorse, {
       propsData,
       store,
       localVue,
@@ -112,7 +112,7 @@ describe("Horse.vue", () => {
   it("pauses animation when race is paused", () => {
     getters.isPaused.mockReturnValue(true);
 
-    const wrapper = shallowMount(Horse, {
+    const wrapper = shallowMount(AnimatedHorse, {
       propsData,
       store,
       localVue,
@@ -128,7 +128,7 @@ describe("Horse.vue", () => {
   it("plays animation when race is not paused", () => {
     getters.isPaused.mockReturnValue(false);
 
-    const wrapper = shallowMount(Horse, {
+    const wrapper = shallowMount(AnimatedHorse, {
       propsData,
       store,
       localVue,
@@ -144,7 +144,7 @@ describe("Horse.vue", () => {
   it("calculates animation speed correctly", () => {
     getters.isPaused.mockReturnValue(false);
 
-    const wrapper = shallowMount(Horse, {
+    const wrapper = shallowMount(AnimatedHorse, {
       propsData,
       store,
       localVue,
@@ -161,7 +161,7 @@ describe("Horse.vue", () => {
   it("stops animation on component destruction", () => {
     getters.isPaused.mockReturnValue(false);
 
-    const wrapper = shallowMount(Horse, {
+    const wrapper = shallowMount(AnimatedHorse, {
       propsData,
       store,
       localVue,

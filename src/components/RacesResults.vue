@@ -1,3 +1,19 @@
+<script setup lang="ts">
+import { computed } from "vue";
+import { useStore } from "@/store";
+import type { IRace } from "@/store/modules/types";
+import SingleRoundResultTable from "@/components/SingleRoundResultTable.vue";
+
+const store = useStore();
+
+const getCurrentRace = computed<IRace | null>(
+  () => store.getters["races/getCurrentRace"]
+);
+const getPreviousRaces = computed<IRace[]>(
+  () => store.getters["races/getPreviousRaces"]
+);
+</script>
+
 <template>
   <div class="RaceResults">
     <div class="RaceResults-current">
@@ -9,7 +25,7 @@
           :key="`${getCurrentRace.id}-${round.id}`"
         >
           <h3>{{ round.id }} {{ round.distance }}m</h3>
-          <RoundResultTable :roundInfo="round" />
+          <SingleRoundResultTable :roundInfo="round" />
         </div>
       </template>
       <template v-else>
@@ -34,7 +50,7 @@
               :key="`${race.id}-${round.id}`"
             >
               <h4>{{ round.id }} - {{ round.distance }}m</h4>
-              <RoundResultTable :round-info="round" />
+              <SingleRoundResultTable :round-info="round" />
             </div>
           </div>
         </div>
@@ -46,30 +62,9 @@
   </div>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import Component from "vue-class-component";
-import { mapGetters } from "vuex";
-import { IRace } from "@/store/modules/types";
-import RoundResultTable from "@/components/RoundResultTable.vue";
-
-@Component({
-  name: "RaceResults",
-  components: { RoundResultTable },
-  computed: {
-    ...mapGetters("races", ["getCurrentRace", "getPreviousRaces"]),
-  },
-})
-export default class RaceResults extends Vue {
-  public getCurrentRace!: IRace | null;
-
-  public mounted() {
-    // You can fetch or compute any initial data here if needed
-  }
-}
-</script>
-
 <style lang="scss">
+@use "@/assets/styles/variables.scss" as *;
+
 .RaceResults {
   display: flex;
   align-items: stretch;
@@ -78,6 +73,16 @@ export default class RaceResults extends Vue {
   min-width: 350px;
   max-width: 600px;
   background: white;
+
+  @media (max-width: $laptop) {
+    width: 100%;
+    max-width: 100%;
+    min-width: 100%;
+  }
+
+  @media (max-width: $tablet) {
+    flex-direction: column;
+  }
 
   &-current,
   &-prev {
@@ -96,9 +101,11 @@ export default class RaceResults extends Vue {
     h2 {
       background: #b2ff9d;
     }
+
     h3 {
       background: #ffffa5;
     }
+
     h4 {
       background: #ffabab;
     }

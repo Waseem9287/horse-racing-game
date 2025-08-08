@@ -1,3 +1,40 @@
+<script setup lang="ts">
+import { computed } from "vue";
+import { useStore } from "@/store";
+import type { IHorse, IRound } from "@/store/modules/types";
+
+const store = useStore();
+
+const isPaused = computed(() => store.getters["races/isPaused"]);
+const getCurrentRound = computed<IRound | null>(
+  () => store.getters["races/getCurrentRound"]
+);
+const getHorses = computed<IHorse[]>(() => store.getters["horses/getHorses"]);
+
+const generateProgram = () => store.dispatch("horses/generateProgram");
+const generateRace = () => store.dispatch("races/generateRace");
+const pauseRace = () => store.dispatch("races/pauseRace");
+const resumeRace = () => store.dispatch("races/resumeRace");
+
+function toggleRace() {
+  if (isPaused.value && getCurrentRound.value) {
+    resumeRace();
+  } else if (isPaused.value && !getCurrentRound.value) {
+    generateRace();
+    resumeRace();
+  } else {
+    pauseRace();
+  }
+}
+
+function StartProgram() {
+  generateProgram();
+  if (!isPaused.value) {
+    pauseRace();
+  }
+}
+</script>
+
 <template>
   <div class="AppHeader">
     <div class="container">
@@ -12,58 +49,18 @@
   </div>
 </template>
 
-<script lang="ts">
-import Vue from "vue";
-import Component from "vue-class-component";
-import { mapActions, mapGetters } from "vuex";
-import { IHorse, IRound } from "@/store/modules/types";
-
-@Component({
-  name: "AppHeader",
-  computed: {
-    ...mapGetters("races", ["isPaused", "getCurrentRound"]),
-    ...mapGetters("horses", ["getHorses"]),
-  },
-  methods: {
-    ...mapActions("horses", ["generateProgram"]),
-    ...mapActions("races", ["pauseRace", "resumeRace", "generateRace"]),
-  },
-})
-export default class AppHeader extends Vue {
-  public isPaused!: boolean;
-  public getCurrentRound!: IRound | null;
-  public getHorses!: Array<IHorse>;
-  public pauseRace!: () => void;
-  public resumeRace!: () => void;
-  public generateProgram!: () => void;
-  public generateRace!: () => void;
-
-  public toggleRace(): void {
-    if (this.isPaused && this.getCurrentRound) {
-      this.resumeRace();
-    } else if (this.isPaused && !this.getCurrentRound) {
-      this.generateRace();
-      this.resumeRace();
-    } else {
-      this.pauseRace();
-    }
-  }
-
-  public StartProgram(): void {
-    this.generateProgram();
-    if (!this.isPaused) {
-      this.pauseRace();
-    }
-  }
-}
-</script>
-
 <style lang="scss">
+@use "@/assets/styles/variables.scss" as *;
+
 .AppHeader {
   background-color: #282c34;
   color: #dddddd;
 
   height: 80px;
+
+  @media (max-width: $laptop) {
+    height: auto;
+  }
 
   h1 {
     margin: 0;
@@ -74,6 +71,10 @@ export default class AppHeader extends Vue {
   &-actions {
     display: flex;
     gap: 10px;
+
+    @media (max-width: $laptop) {
+      flex-direction: column;
+    }
 
     button {
       padding: 10px 20px;

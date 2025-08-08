@@ -1,8 +1,17 @@
 import Vue, { VNode } from "vue";
 
+export type LoadedLottieAnimation = HTMLElement & {
+  play: () => void;
+  stop: () => void;
+  pause: () => void;
+  playSpeed: number;
+};
+
 declare global {
   interface Window {
-    lottie: any;
+    lottie: {
+      loadAnimation: (options: any) => LoadedLottieAnimation;
+    };
   }
 
   namespace JSX {
